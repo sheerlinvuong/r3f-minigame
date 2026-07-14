@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber'
-import { RigidBody } from '@react-three/rapier'
+import { CuboidCollider, RigidBody } from '@react-three/rapier'
 
 
 //TO DO [] Add player
@@ -10,9 +10,9 @@ function Environment() {
     //TO DO [] Create points UI
 
     return <>
-        <mesh scale={[4, 0.2, 4]}>
+        <mesh receiveShadow scale={[4, 0.2, 4]}>
             <boxGeometry />
-            <meshStandardMaterial color="greenyellow" />
+            <meshStandardMaterial color="greenyellow" wireframe={false} />
         </mesh>
     </>
 }
@@ -41,16 +41,31 @@ function Items() {
     })
 }
 
+function Bounds() {
+    return <>
+        <RigidBody type="fixed" restitution={0.2} friction={0} >
+            {/* <mesh scale={[4, 0.2, 4]}>
+                <boxGeometry />
+                <meshStandardMaterial wireframe color="blue" />
+            </mesh> */}
+            <CuboidCollider args={[2, 0.10, 2]}
+                restitution={0.2}
+                friction={1} />
+        </RigidBody>
+    </>
+}
+
+
 const ringGeometry = new THREE.RingGeometry(4, 6, 32);
 export default function Level() {
     const tableRef = useRef()
 
-    // useFrame((state) => {
-    //     const time = state.clock.getElapsedTime()
-    //     const rotation = new THREE.Quaternion()
-    //     rotation.setFromEuler(new THREE.Euler(0, time / 5, 0))
-    //     tableRef.current.setNextKinematicRotation(rotation)
-    // })
+    useFrame((state) => {
+        const time = state.clock.getElapsedTime()
+        const rotation = new THREE.Quaternion()
+        rotation.setFromEuler(new THREE.Euler(0, time / 5, 0))
+        tableRef.current.setNextKinematicRotation(rotation)
+    })
 
     return <>
         {/* Main Area */}
@@ -67,7 +82,9 @@ export default function Level() {
             </group >
         </RigidBody>
 
-
+        <group scale={4}>
+            <Bounds />
+        </group>
         <group scale={4}>
             <Environment />
         </group>

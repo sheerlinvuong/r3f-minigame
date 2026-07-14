@@ -1,5 +1,6 @@
 import { OrbitControls } from '@react-three/drei'
 import { Physics } from '@react-three/rapier'
+import Player from './Player.jsx'
 import Lights from './Lights.jsx'
 import Level from './Level.jsx'
 
@@ -11,10 +12,11 @@ export default function Experience() {
 
         <Physics debug>
 
-
             <Lights />
 
             <Level />
+            <Player />
+
         </Physics>
 
     </>
