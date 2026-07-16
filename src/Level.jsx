@@ -3,17 +3,19 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber'
 import { CuboidCollider, RigidBody } from '@react-three/rapier'
 
-
-//TO DO [] Add player
-
 function Environment() {
     //TO DO [] Create points UI
 
     return <>
-        <mesh receiveShadow scale={[4, 0.2, 4]}>
-            <boxGeometry />
-            <meshStandardMaterial color="greenyellow" wireframe={false} />
-        </mesh>
+        <RigidBody type="fixed" colliders={false} >
+            <mesh receiveShadow scale={[4, 0.2, 4]}>
+                <boxGeometry />
+                <meshStandardMaterial color="greenyellow" wireframe={false} />
+            </mesh>
+            <CuboidCollider args={[2, 0.10, 2]}
+                restitution={0.2}
+                friction={10} />
+        </RigidBody>
     </>
 }
 
@@ -41,20 +43,6 @@ function Items() {
     })
 }
 
-function Bounds() {
-    return <>
-        <RigidBody type="fixed" restitution={0.2} friction={0} >
-            {/* <mesh scale={[4, 0.2, 4]}>
-                <boxGeometry />
-                <meshStandardMaterial wireframe color="blue" />
-            </mesh> */}
-            <CuboidCollider args={[2, 0.10, 2]}
-                restitution={0.2}
-                friction={1} />
-        </RigidBody>
-    </>
-}
-
 
 const ringGeometry = new THREE.RingGeometry(4, 6, 32);
 export default function Level() {
@@ -67,24 +55,25 @@ export default function Level() {
         tableRef.current.setNextKinematicRotation(rotation)
     })
 
+
+
     return <>
         {/* Main Area */}
-        <RigidBody ref={tableRef} type="kinematicPosition">
-            <group position-y={1} >
-                {/* Items */}
+        <group position-y={1} >
+            {/* Items */}
+            <RigidBody ref={tableRef} type="kinematicPosition" colliders="trimesh" >
                 <group position-y={0.5}>
                     <Items />
                 </group>
+
                 {/* Table */}
                 <mesh castShadow geometry={ringGeometry} rotation={[-Math.PI / 2, 0, 0]} position-x={0}>
                     <meshStandardMaterial side={THREE.DoubleSide} color={new THREE.Color().setHex(0xDEB887)} />
                 </mesh>
-            </group >
-        </RigidBody>
+            </RigidBody>
 
-        <group scale={4}>
-            <Bounds />
-        </group>
+
+        </group >
         <group scale={4}>
             <Environment />
         </group>
