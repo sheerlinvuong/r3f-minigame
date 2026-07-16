@@ -1,43 +1,55 @@
+import { CapsuleCollider, RigidBody } from '@react-three/rapier'
 import { useFrame } from '@react-three/fiber'
 import { useKeyboardControls } from '@react-three/drei'
 import { useRef } from 'react'
-import { vec3 } from 'gl-matrix'
 
-
-export default function Player() {
+export default function PlayerV2() {
     const body = useRef()
     const [subscribeKeys, getKeys] = useKeyboardControls()
-
-    const speed = 0.1
-    let position = {}
-    position["current"] = vec3.fromValues(1, 2, 1)
-    position["previous"] = vec3.clone(position.current)
+    const startPostion = [0, 2, 0]
+    const speed = 4
 
     useFrame((state, delta) => {
         const { forward, backward, leftward, rightward } = getKeys()
 
-        if (forward) {
-            position.current[0] += speed
-        }
-        if (rightward) {
-            position.current[2] += speed
-        }
-        if (backward) {
-            position.current[0] -= speed
-        }
-        if (leftward) {
-            position.current[2] -= speed
-        }
+        if (body.current) {
+            const vel = body.current.linvel()
 
-        body.current.position.set(position.current[0], position.current[1], position.current[2])
+            const movement = {
+                x: 0,
+                z: 0
+            }
+
+            if (forward) {
+                movement.z = 1
+            }
+            if (backward) {
+                movement.z = -1
+            }
+            if (leftward) {
+                movement.x = 1
+            }
+            if (rightward) {
+                movement.x = -1
+            }
+
+            if (movement.z !== 0 || movement.x !== 0) {
+                vel.x = speed * movement.x
+                vel.z = speed * movement.z
+            }
+
+            body.current.setLinvel(vel, true)
+        }
     })
 
     return <>
-        <mesh ref={body} castShadow scale={2} position={[2, 2, 0]}>
-            <boxGeometry />
-            <meshStandardMaterial flatShading={true} color="mediumpurple" />
-        </mesh>
-
+        <RigidBody ref={body} colliders={false} position={startPostion} lockRotations>
+            <mesh castShadow scale={0.5} >
+                <capsuleGeometry />
+                <meshStandardMaterial flatShading={true} color="mediumpurple" />
+            </mesh>
+            <CapsuleCollider args={[0.25, 0.5]} />
+        </RigidBody>
     </>
 
 }
