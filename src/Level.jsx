@@ -5,17 +5,15 @@ import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
 function Environment() {
   //TO DO [] Create points UI
-
   return (
-    <>
-      <RigidBody type="fixed" colliders={false}>
-        <mesh receiveShadow scale={[4, 0.2, 4]}>
-          <boxGeometry />
-          <meshStandardMaterial color="greenyellow" wireframe={false} />
-        </mesh>
-        <CuboidCollider args={[2, 0.1, 2]} restitution={0.2} friction={10} />
-      </RigidBody>
-    </>
+    // Floor
+    <RigidBody type="fixed" colliders={false}>
+      <mesh receiveShadow scale={[4, 0.2, 4]}>
+        <boxGeometry />
+        <meshStandardMaterial color="greenyellow" wireframe={false} />
+      </mesh>
+      <CuboidCollider args={[2, 0.1, 2]} restitution={0.2} friction={10} />
+    </RigidBody>
   );
 }
 
@@ -24,16 +22,15 @@ function Items() {
   //TO DO [] Create points system
 
   const radius = 5; // Circle radius
-  const totalPoints = 12;
-  let coordArray = new Array(totalPoints).fill(0);
+  const totalItems = 12;
+  const itemLength = new Array(totalItems).fill(0);
 
-  return coordArray.map((item, i) => {
-    const angle = (i * 2 * Math.PI) / totalPoints;
+  return itemLength.map((item, i) => {
+    const angle = (i * 2 * Math.PI) / totalItems;
 
     // Calculate coordinates
     const x = radius * Math.cos(angle);
     const y = radius * Math.sin(angle);
-
     return (
       <mesh
         key={i}
@@ -49,6 +46,7 @@ function Items() {
 }
 
 const ringGeometry = new THREE.RingGeometry(4, 6, 32);
+
 export default function Level() {
   const tableRef = useRef();
 
@@ -58,23 +56,20 @@ export default function Level() {
     rotation.setFromEuler(new THREE.Euler(0, time / 5, 0));
     tableRef.current.setNextKinematicRotation(rotation);
   });
-
   return (
     <>
-      {/* Main Area */}
+      {/* Table & Items */}
       <group position-y={1}>
-        {/* Items */}
         <RigidBody ref={tableRef} type="kinematicPosition" colliders="trimesh">
-          <group position-y={0.5}>
+          {/* Items */}
+          <group position-y={0.4}>
             <Items />
           </group>
-
           {/* Table */}
           <mesh
             castShadow
             geometry={ringGeometry}
             rotation={[-Math.PI / 2, 0, 0]}
-            position-x={0}
           >
             <meshStandardMaterial
               side={THREE.DoubleSide}
@@ -83,6 +78,7 @@ export default function Level() {
           </mesh>
         </RigidBody>
       </group>
+
       <group scale={4}>
         <Environment />
       </group>
