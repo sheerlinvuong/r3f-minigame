@@ -52,7 +52,7 @@ export default function Player() {
       >
         <mesh castShadow scale={0.5}>
           <capsuleGeometry />
-          <meshStandardMaterial flatShading={true} color="mediumpurple" />
+          <meshStandardMaterial flatShading={true} color="orangered" />
         </mesh>
         <CapsuleCollider args={[0.25, 0.5]} />
       </RigidBody>
