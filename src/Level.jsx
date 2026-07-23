@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
-import Items from "./Items";
+import TableItems from "./components/TableItems";
 
 function Environment() {
   //TO DO [] Create points UI
@@ -35,12 +35,11 @@ export default function Level() {
     <>
       {/* Table & Items */}
       <group position-y={1}>
+        {/* Items */}
         <RigidBody ref={tableRef} type="kinematicPosition" colliders={false}>
-          {/* Items */}
-          {/* <group> */}
-          <Items />
-          {/* </group> */}
+          <TableItems />
         </RigidBody>
+
         {/* Table */}
         <mesh
           castShadow

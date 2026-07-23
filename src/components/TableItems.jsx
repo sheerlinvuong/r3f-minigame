@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { MeshCollider, RigidBody, BallCollider } from "@react-three/rapier";
-import FoodData from "./FoodData";
-import { FoodItem } from "./components/FoodItem";
-import { Plate } from "./components/Plate";
+import FoodData from "../FoodData";
+import { FoodItem } from "./FoodItem";
+import { Plate } from "./Plate";
 
 function randomFoodName() {
   const MenuNames = Object.keys(FoodData);
@@ -10,7 +10,7 @@ function randomFoodName() {
   return MenuNames[randomNumber]; // string
 }
 
-export default function Items() {
+export default function TableItems() {
   const radius = 5; // Circle radius
   const totalItems = 12;
   const itemLength = new Array(totalItems).fill(0);

@@ -1,4 +1,4 @@
-import { useAssets } from "../stores/useFoods";
+import { useAssets } from "../stores/useAssets";
 import { Clone } from "@react-three/drei";
 
 export function Plate({ ...props }) {
