@@ -1,23 +1,5 @@
 import { create } from "zustand";
 
-const Menu = [
-  {
-    price: 2.5,
-    name: "Jelly",
-    colour: "white",
-  },
-  {
-    price: 5.5,
-    name: "Pancake",
-    colour: "mediumpurple",
-  },
-  {
-    price: 4.1,
-    name: "Cube",
-    colour: "dustypink",
-  },
-];
-
 // Game loop
 //1. Intro card                             Ready -> Set Playing
 //3. Timer start                            Playing
@@ -43,7 +25,7 @@ export default create((set) => {
       //     set((state) => ({ phase: "ended" }));
       //   }, 5000);
       setTimeout(() => {
-        end();
+        set({ phase: "ended" });
       }, 5000);
     },
     restart: () => {
@@ -59,3 +41,7 @@ export default create((set) => {
     },
   };
 });
+
+// function calculateWinner(){
+// return player
+//}
