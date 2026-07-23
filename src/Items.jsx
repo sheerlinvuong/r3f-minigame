@@ -1,23 +1,11 @@
-import { MeshCollider, RigidBody, BallCollider } from "@react-three/rapier";
 import { useMemo, useState } from "react";
-//TO DO [] Import diff foods
-import { Clone } from "@react-three/drei";
-import { useFoods, Menu } from "./stores/useFoods";
-
-export function Food({ type, ...props }) {
-  const { nodes } = useFoods();
-  const food = Menu[type];
-
-  return <Clone object={nodes[food.node]} scale={food.scale} {...props} />;
-}
-
-export function Plate({ ...props }) {
-  const { nodes } = useFoods();
-  return <Clone object={nodes["Plate"]} {...props} />;
-}
+import { MeshCollider, RigidBody, BallCollider } from "@react-three/rapier";
+import FoodData from "./FoodData";
+import { FoodItem } from "./components/FoodItem";
+import { Plate } from "./components/Plate";
 
 function randomFoodName() {
-  const MenuNames = Object.keys(Menu);
+  const MenuNames = Object.keys(FoodData);
   const randomNumber = Math.floor(Math.random() * MenuNames.length);
   return MenuNames[randomNumber]; // string
 }
@@ -68,7 +56,7 @@ export default function Items() {
       </group>
       {foods[plate.id] && (
         <>
-          <Food type={foods[plate.id]} />
+          <FoodItem type={foods[plate.id]} />
           <BallCollider
             args={[0.5]}
             //   position={[0, 0.5, 0]}
