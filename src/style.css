@@ -8,3 +8,62 @@ body,
   height: 100%;
   background: ivory;
 }
+
+/* .saira-<uniquifier> {
+  font-family: "Saira", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+} */
+
+/**
+ * Interface
+ */
+.interface {
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* pointer-events: none; */
+  color: #fff;
+  font-family: "Saira", sans-serif;
+}
+.intro {
+  background-color: #000556;
+  width: 80%;
+  border-radius: 5px;
+  border: 5px solid #fff;
+  padding: 1rem;
+}
+h1 {
+  text-transform: uppercase;
+  text-align: center;
+}
+.intro p {
+  margin: 0 0 0.5rem 0;
+}
+.price-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 1px;
+  grid-row-gap: 2.5rem;
+  padding-top: 3rem;
+}
+
+.start {
+  background-color: #000556;
+  width: 80%;
+  border-radius: 5px;
+  border: 5px solid #fff;
+  padding: 1rem;
+}
