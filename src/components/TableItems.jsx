@@ -51,8 +51,8 @@ export default function TableItems() {
 
   return platePositions.map((plate) => (
     <group key={plate.id} position={plate.position}>
-      <group position-y={0.15}>
-        <Plate scale={0.6} />
+      <group position-y={0}>
+        <Plate scale={0.28} />
       </group>
       {foods[plate.id] && (
         <>

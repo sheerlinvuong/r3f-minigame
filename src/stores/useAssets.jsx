@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 import FoodData from "../FoodData.jsx";
 
 export function useAssets() {
-  const { nodes } = useGLTF("/assets/models/pancake_assets.glb");
+  const { nodes } = useGLTF("/assets/models/pancake_assetss.glb");
 
   const foodAssets = useMemo(() => {
     return Object.fromEntries(
@@ -23,4 +23,4 @@ export function useAssets() {
   };
 }
 
-useGLTF.preload("/assets/models/pancake_assets.glb");
+useGLTF.preload("/assets/models/pancake_assetss.glb");

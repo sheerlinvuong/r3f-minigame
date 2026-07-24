@@ -1,26 +1,22 @@
 const FoodData = {
-  Pancake_Bottom: {
-    node: "Pancake_Bottom",
-    price: 2.5,
-    name: "Pancake_Bottom",
-    scale: 0.4,
+  Blueberry: {
+    price: 5,
+    scale: 0.1,
   },
   Cream: {
-    node: "Cream",
-    price: 5.5,
-    name: "Cream",
+    price: 4,
     scale: 0.25,
   },
+  Pancake_Bottom: {
+    price: 2.5,
+    scale: 0.3,
+  },
   Strawberry: {
-    node: "Strawberry",
-    price: 4.1,
-    name: "Strawberry",
-    scale: 0.05,
+    price: 3,
+    scale: 0.5,
   },
   Syrup: {
-    node: "Syrup",
-    price: 4.1,
-    name: "Syrup",
+    price: 2,
     scale: 0.3,
   },
 };
