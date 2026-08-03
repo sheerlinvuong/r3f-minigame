@@ -1,15 +1,25 @@
 import usePlayer from "../stores/usePlayer";
+import { useState, useEffect } from "react";
 
 const PlayerPoints = () => {
   const players = usePlayer((state) => state.players);
   const plates = players[0].collectedFood;
+  const finalScore = players[0].score;
+
+  const [score, setScore] = useState(0);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      setScore(finalScore);
+    });
+  }, [finalScore]);
 
   return (
     <div className="points">
       <div className="left">
         <div className="player">
           <p>1P</p>
-          <p>Final Score</p>
+          <p className="score" style={{ "--num": score }}></p>
         </div>
 
         <div className="plates">

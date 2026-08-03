@@ -19,10 +19,11 @@ export default function GameManager() {
   const phase = useGame((state) => state.phase);
 
   const start = useGame((state) => state.start);
-  const beginPlaying = useGame((s) => s.beginPlaying);
-  const endPlaying = useGame((s) => s.endPlaying);
-  const restart = useGame((s) => s.restart);
+  const beginPlaying = useGame((state) => state.beginPlaying);
+  const endPlaying = useGame((state) => state.endPlaying);
+  const restart = useGame((state) => state.restart);
 
+  const calculateScore = usePlayer((state) => state.calculateScore);
   const resetScore = usePlayer((state) => state.resetScore);
 
   useEffect(() => {
@@ -36,7 +37,10 @@ export default function GameManager() {
   useEffect(() => {
     if (phase !== "playing") return;
 
-    const timer = setTimeout(endPlaying, 15000);
+    const timer = setTimeout(() => {
+      endPlaying();
+      calculateScore();
+    }, 15000);
 
     return () => clearTimeout(timer);
   }, [phase, endPlaying]);

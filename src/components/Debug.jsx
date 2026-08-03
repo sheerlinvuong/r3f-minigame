@@ -13,7 +13,7 @@ export default function Debug() {
       <span>{players[0].collectedFood}</span>
       <span>{players[0].score}</span>
       <span>{players[1].score}</span>
-      <span>{phase}</span>
+      <span>plase: {phase}</span>
       <button
         onClick={() => {
           start();

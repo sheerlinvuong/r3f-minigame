@@ -128,3 +128,18 @@ h1 {
   width: 70px;
   height: 35px;
 }
+
+@property --num {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.score {
+  transition: --num 5s ease-in-out;
+  counter-reset: num var(--num);
+}
+
+.score::after {
+  content: counter(num);
+}
