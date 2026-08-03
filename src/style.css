@@ -21,22 +21,27 @@ body,
 /**
  * Interface
  */
-.interface {
+.main {
   z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  font-family: "Saira", sans-serif;
+}
+
+.interface {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  /* pointer-events: none; */
   color: #fff;
-  font-family: "Saira", sans-serif;
 }
+
 .intro {
   background-color: #000556;
   width: 80%;
@@ -82,4 +87,44 @@ h1 {
   border-radius: 5px;
   border: 1px solid grey;
   padding: 1rem;
+}
+
+/**
+ * Player Points
+ */
+.points {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  width: 85%;
+  height: calc(100% - 10vh);
+  margin: 5vh auto;
+  /* padding: 20px 60px; */
+
+  color: #000;
+}
+.points > .left {
+  flex-basis: 30%;
+}
+
+.points > .right {
+  flex-basis: 30%;
+  text-align: end;
+}
+
+.player {
+  display: flex;
+}
+.plates {
+  display: grid;
+  grid-template-rows: repeat(5, 15px);
+  grid-auto-columns: 70px;
+  grid-auto-flow: column;
+  padding-bottom: 25px;
+}
+.plates img {
+  width: 70px;
+  height: 35px;
 }

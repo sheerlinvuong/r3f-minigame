@@ -1,22 +1,24 @@
 import { create } from "zustand";
 import FoodData from "../FoodData";
 
+const initialPlayerArray = [
+  {
+    id: "player1",
+    score: 0,
+    collectedFood: [],
+  },
+  {
+    id: "player2",
+    score: 0,
+    collectedFood: [],
+  },
+];
+
 export default create((set) => {
   return {
     comboPoints: 10,
 
-    players: [
-      {
-        id: "player1",
-        score: 0,
-        collectedFood: [],
-      },
-      {
-        id: "player2",
-        score: 0,
-        collectedFood: [],
-      },
-    ],
+    players: initialPlayerArray,
 
     logCollectedFood: (playerId, foodName) =>
       set((state) => ({
@@ -57,6 +59,11 @@ export default create((set) => {
             score: totalScore,
           };
         }),
+      })),
+
+    resetScore: () =>
+      set((state) => ({
+        players: initialPlayerArray,
       })),
   };
 });

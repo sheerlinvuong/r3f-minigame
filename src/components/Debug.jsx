@@ -1,5 +1,5 @@
-import useGame from "./stores/useGame";
-import usePlayer from "./stores/usePlayer.jsx";
+import useGame from "../stores/useGame.jsx";
+import usePlayer from "../stores/usePlayer.jsx";
 
 export default function Debug() {
   const phase = useGame((state) => state.phase);
