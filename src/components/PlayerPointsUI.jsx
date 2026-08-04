@@ -18,8 +18,16 @@ const PlayerPoints = () => {
     <div className="points">
       <div className="left">
         <div className="player">
-          <p>1P</p>
-          <p className="score" style={{ "--num": score }}></p>
+          <h3>1P</h3>
+          <p
+            className="score"
+            style={{
+              "--num": score,
+              visibility: finalScore > 0 ? "visible" : "hidden",
+            }}
+          >
+            £
+          </p>
         </div>
 
         <div className="plates">

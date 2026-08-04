@@ -4,6 +4,7 @@ import FoodData from "../FoodData";
 import { FoodItem } from "./FoodItem";
 import { Plate } from "./Plate";
 import usePlayer from "../stores/usePlayer";
+import useGame from "../stores/useGame";
 
 const MenuNames = Object.keys(FoodData);
 
@@ -53,12 +54,15 @@ export default function TableItems() {
     }, 5000);
   }
 
+  const phase = useGame((state) => state.phase);
+  // TODO get some transitions on in and out
+
   return platePositions.map((plate) => (
     <group key={plate.id} position={plate.position}>
       <group position-y={0}>
         <Plate scale={0.28} />
       </group>
-      {foods[plate.id] && (
+      {foods[plate.id] && phase === "playing" && (
         <>
           <FoodItem type={foods[plate.id]} />
           <BallCollider
