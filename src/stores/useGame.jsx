@@ -1,47 +1,17 @@
 import { create } from "zustand";
 
-// Game loop
-//1. Intro card                             Ready -> Set Playing
-//3. Timer start                            Playing
-//2. Countdown 321...Start! Food appears    Playing
-//4. Timer End                              Set Ended
-//5. Calculate winner                       Ended -> Set Ready
-//5. restart/ intro card
-
 export default create((set) => {
   return {
-    /**
-     * Phases
-     */
-    phase: "ready",
-    isCountdown: false,
+    phase: "ready", //ready -> countdown -> playing -> ended
 
-    start: () => {
-      set({ phase: "playing" });
-      // hide interface
-      // countdown begin
+    start: () => set({ phase: "countdown" }),
 
-      //   setTimeout(() => {
-      //     set((state) => ({ phase: "ended" }));
-      //   }, 5000);
-      setTimeout(() => {
-        set({ phase: "ended" });
-      }, 5000);
-    },
-    restart: () => {
-      set(() => {
-        return { phase: "ready" };
-      });
-    },
+    beginPlaying: () => set({ phase: "playing" }),
 
-    end: () => {
-      set(() => {
-        return { phase: "ended" };
-      });
-    },
+    endPlaying: () => set({ phase: "results" }),
+
+    revealWinner: () => set({ phase: "winner" }),
+
+    restart: () => set({ phase: "ready" }),
   };
 });
-
-// function calculateWinner(){
-// return player
-//}

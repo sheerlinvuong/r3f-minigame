@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import { Canvas } from "@react-three/fiber";
 import Experience from "./Experience.jsx";
 import { KeyboardControls } from "@react-three/drei";
-import Interface from "./Interface.jsx";
+import GameManager from "./components/GameManager.jsx";
+import Debug from "./components/Debug.jsx";
 
 const root = ReactDOM.createRoot(document.querySelector("#root"));
 
@@ -29,6 +30,7 @@ root.render(
       <axesHelper args={[50]} />
       <Experience />
     </Canvas>
-    <Interface />
+    <GameManager />
+    <Debug />
   </KeyboardControls>,
 );

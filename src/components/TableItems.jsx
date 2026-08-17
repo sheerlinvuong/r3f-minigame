@@ -3,9 +3,12 @@ import { MeshCollider, RigidBody, BallCollider } from "@react-three/rapier";
 import FoodData from "../FoodData";
 import { FoodItem } from "./FoodItem";
 import { Plate } from "./Plate";
+import usePlayer from "../stores/usePlayer";
+import useGame from "../stores/useGame";
+
+const MenuNames = Object.keys(FoodData);
 
 function randomFoodName() {
-  const MenuNames = Object.keys(FoodData);
   const randomNumber = Math.floor(Math.random() * MenuNames.length);
   return MenuNames[randomNumber]; // string
 }
@@ -29,10 +32,11 @@ export default function TableItems() {
     platePositions.map(() => randomFoodName()),
   );
 
-  function collectFood(id) {
-    // Award points...
+  const logCollectedFood = usePlayer((state) => state.logCollectedFood);
 
-    // Remove the food immediately
+  function collectFood(id) {
+    logCollectedFood("player1", foods[id]);
+
     setFoods((prev) => {
       const next = [...prev];
       next[id] = null;
@@ -40,6 +44,7 @@ export default function TableItems() {
     });
 
     // Respawn after 5 seconds
+    // TODO spawn rate weighting
     setTimeout(() => {
       setFoods((prev) => {
         const next = [...prev];
@@ -49,12 +54,15 @@ export default function TableItems() {
     }, 5000);
   }
 
+  const phase = useGame((state) => state.phase);
+  // TODO get some transitions on in and out
+
   return platePositions.map((plate) => (
     <group key={plate.id} position={plate.position}>
       <group position-y={0}>
         <Plate scale={0.28} />
       </group>
-      {foods[plate.id] && (
+      {foods[plate.id] && phase === "playing" && (
         <>
           <FoodItem type={foods[plate.id]} />
           <BallCollider

@@ -21,22 +21,30 @@ body,
 /**
  * Interface
  */
-.interface {
+.main {
   z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  font-family: "Saira", sans-serif;
+}
+
+.interface {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  /* pointer-events: none; */
   color: #fff;
-  font-family: "Saira", sans-serif;
 }
+
+/**
+ * Intro Card
+ */
 .intro {
   background-color: #000556;
   width: 80%;
@@ -66,4 +74,178 @@ h1 {
   border-radius: 5px;
   border: 5px solid #fff;
   padding: 1rem;
+}
+
+/**
+ * Debug Card
+ */
+.debug {
+  z-index: 9999;
+  opacity: 0.4;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: #000;
+  font-family: "Saira", sans-serif;
+
+  border-radius: 5px;
+  border: 1px solid grey;
+  padding: 1rem;
+}
+
+/**
+ * Player Points
+ */
+.points {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  width: 85%;
+  height: calc(100% - 10vh);
+  margin: 5vh auto;
+  /* padding: 20px 60px; */
+
+  color: #000;
+}
+.points > .left {
+  flex-basis: 30%;
+}
+
+.points > .right {
+  flex-basis: 30%;
+  text-align: end;
+}
+
+.player {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+.player h3 {
+  font-size: 2.5rem;
+  line-height: 3rem;
+  font-weight: 300;
+  margin: 0;
+  padding: 0 15px;
+  height: fit-content;
+  background-color: blue;
+  border-radius: 50%;
+  border: 4px solid black;
+}
+.player .score {
+  font-size: 2.75rem;
+  -webkit-text-stroke: 2px black;
+  letter-spacing: -0.15rem;
+  font-weight: 600;
+  margin: 0;
+  padding-left: 1rem;
+  /* TODO not a fan of the integer font */
+}
+
+@property --num {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.score {
+  transition: --num 5s ease-in-out;
+  counter-reset: num var(--num);
+}
+
+.score::after {
+  content: counter(num);
+}
+
+.plates {
+  display: grid;
+  grid-template-rows: repeat(5, 15px);
+  grid-auto-columns: 70px;
+  grid-auto-flow: column;
+  padding-bottom: 25px;
+}
+.plates img {
+  width: 70px;
+  height: 35px;
+}
+
+/**
+ * Countdown 
+ */
+.fixed {
+  opacity: 0.85;
+  position: fixed;
+  inset: 0;
+}
+.center {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.countdown > img {
+  transition: all 1.75s ease;
+  opacity: 0;
+
+  &:nth-child(1) {
+    animation: opacityanim 4s infinite ease;
+    animation-delay: 0s;
+  }
+  &:nth-child(2) {
+    animation: opacityanim 4s infinite ease;
+    animation-delay: 1s;
+  }
+  &:nth-child(3) {
+    animation: opacityanim 4s infinite ease;
+    animation-delay: 2s;
+  }
+}
+
+@keyframes opacityanim {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/**
+ * Winner 
+ */
+.winner {
+  font-size: 5rem;
+  line-height: 5rem;
+  font-weight: 600;
+  color: peachpuff;
+  -webkit-text-stroke: 2px black;
+  letter-spacing: -0.15rem;
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.restart {
+  display: flex;
+  margin: 1rem auto;
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+  animation-delay: 2s;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
