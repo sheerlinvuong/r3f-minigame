@@ -4,11 +4,13 @@ import FoodData from "../FoodData";
 const initialPlayerArray = [
   {
     id: "player1",
+    label: "1P",
     score: 0,
     collectedFood: [],
   },
   {
     id: "player2",
+    label: "2P",
     score: 0,
     collectedFood: [],
   },
@@ -19,6 +21,8 @@ export default create((set) => {
     comboPoints: 10,
 
     players: initialPlayerArray,
+
+    winner: 0,
 
     logCollectedFood: (playerId, foodName) =>
       set((state) => ({
@@ -61,9 +65,17 @@ export default create((set) => {
         }),
       })),
 
+    calculateWinner: () =>
+      set((state) => ({
+        winner: state.players.reduce((prev, curr) =>
+          prev.score > curr.score ? prev : curr,
+        ),
+      })),
+
     resetScore: () =>
       set((state) => ({
         players: initialPlayerArray,
+        winner: 0,
       })),
   };
 });

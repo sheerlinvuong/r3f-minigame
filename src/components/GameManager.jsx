@@ -4,6 +4,7 @@ import IntroCard from "./IntroCard";
 import PlayerPoints from "./PlayerPointsUI";
 import WinnerCard from "./WinnerCard";
 import usePlayer from "../stores/usePlayer";
+import Countdown from "./Countdown";
 
 // Game loop
 //1. Intro card                             Ready -> Set countdown
@@ -21,14 +22,15 @@ export default function GameManager() {
   const start = useGame((state) => state.start);
   const beginPlaying = useGame((state) => state.beginPlaying);
   const endPlaying = useGame((state) => state.endPlaying);
+  const revealWinner = useGame((state) => state.revealWinner);
   const restart = useGame((state) => state.restart);
 
   const calculateScore = usePlayer((state) => state.calculateScore);
+  const calculateWinner = usePlayer((state) => state.calculateWinner);
   const resetScore = usePlayer((state) => state.resetScore);
 
   useEffect(() => {
     if (phase !== "countdown") return;
-
     const timer = setTimeout(beginPlaying, 3000);
 
     return () => clearTimeout(timer);
@@ -36,7 +38,6 @@ export default function GameManager() {
 
   useEffect(() => {
     if (phase !== "playing") return;
-
     const timer = setTimeout(() => {
       endPlaying();
       calculateScore();
@@ -44,6 +45,17 @@ export default function GameManager() {
 
     return () => clearTimeout(timer);
   }, [phase, endPlaying]);
+
+  useEffect(() => {
+    if (phase !== "results") return;
+
+    const timer = setTimeout(() => {
+      calculateWinner();
+      revealWinner();
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [phase, revealWinner]);
 
   return (
     <div className="main">
@@ -64,7 +76,3 @@ export default function GameManager() {
     </div>
   );
 }
-
-const Countdown = () => {
-  return <div>321</div>;
-};
