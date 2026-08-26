@@ -1,11 +1,10 @@
 import * as THREE from "three";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { CuboidCollider, RigidBody } from "@react-three/rapier";
+import { CuboidCollider, RigidBody, MeshCollider } from "@react-three/rapier";
 import TableItems from "./components/TableItems";
 
 function Environment() {
-  //TO DO [] Create points UI
   return (
     // Floor
     <RigidBody type="fixed" colliders={false}>
@@ -38,19 +37,21 @@ export default function Level() {
         {/* Items */}
         <RigidBody ref={tableRef} type="kinematicPosition" colliders={false}>
           <TableItems />
-        </RigidBody>
 
-        {/* Table */}
-        <mesh
-          castShadow
-          geometry={ringGeometry}
-          rotation={[-Math.PI / 2, 0, 0]}
-        >
-          <meshStandardMaterial
-            side={THREE.DoubleSide}
-            color={new THREE.Color().setHex(0xdeb887)}
-          />
-        </mesh>
+          {/* Table */}
+          <MeshCollider type="trimesh">
+            <mesh
+              castShadow
+              geometry={ringGeometry}
+              rotation={[-Math.PI / 2, 0, 0]}
+            >
+              <meshStandardMaterial
+                side={THREE.DoubleSide}
+                color={new THREE.Color().setHex(0xdeb887)}
+              />
+            </mesh>
+          </MeshCollider>
+        </RigidBody>
       </group>
 
       <group scale={4}>
