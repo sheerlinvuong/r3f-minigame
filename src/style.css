@@ -1,11 +1,10 @@
 html,
 body,
 #root {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
+  margin: 0;
+  overflow: hidden;
   background: ivory;
 }
 
@@ -22,12 +21,9 @@ body,
  * Interface
  */
 .main {
-  z-index: 9999;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
+  inset: 0;
+  height: 100dvh;
   font-family: "Saira", sans-serif;
 }
 
@@ -51,6 +47,7 @@ body,
   border-radius: 5px;
   border: 5px solid #fff;
   padding: 1rem;
+  max-width: 750px;
 }
 h1 {
   text-transform: uppercase;
@@ -74,6 +71,7 @@ h1 {
   border-radius: 5px;
   border: 5px solid #fff;
   padding: 1rem;
+  max-width: 750px;
 }
 
 /**
@@ -105,8 +103,8 @@ h1 {
   align-items: flex-end;
 
   width: 85%;
-  height: calc(100% - 10vh);
-  margin: 5vh auto;
+  height: calc(100% - 10dvh);
+  margin: 5dvh auto;
   /* padding: 20px 60px; */
 
   color: #000;
@@ -145,21 +143,6 @@ h1 {
   margin: 0;
   padding-left: 1rem;
   /* TODO not a fan of the integer font */
-}
-
-@property --num {
-  syntax: "<integer>";
-  initial-value: 0;
-  inherits: false;
-}
-
-.score {
-  transition: --num 5s ease-in-out;
-  counter-reset: num var(--num);
-}
-
-.score::after {
-  content: counter(num);
 }
 
 .plates {

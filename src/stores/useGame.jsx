@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export default create((set) => {
   return {
-    phase: "ready", //ready -> countdown -> playing -> ended
+    phase: "ready",
 
     start: () => set({ phase: "countdown" }),
 
