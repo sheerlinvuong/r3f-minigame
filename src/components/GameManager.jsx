@@ -1,3 +1,12 @@
+// Game loop
+//1. Ready        Intro card
+//2. Countdown    321...Start!
+//3. Playing      Game Start & Food appears
+//4. Results      Food dissapears & Show player scores
+//5. Winner       Show winner & Restart
+
+//TODO: player cannot move until playing
+
 import { useEffect } from "react";
 import useGame from "../stores/useGame";
 import IntroCard from "./IntroCard";
@@ -5,16 +14,6 @@ import PlayerPoints from "./PlayerPointsUI";
 import WinnerCard from "./WinnerCard";
 import usePlayer from "../stores/usePlayer";
 import Countdown from "./Countdown";
-
-// Game loop
-//1. Intro card                             Ready -> Set countdown
-//3. Timer start                            countdown
-//2. Countdown 321...Start! Food appears    Playing
-//4. Timer End                              Set Ended
-//5. Calculate winner                       Ended -> Set Ready
-//5. restart/ intro card
-
-//player cannot move until playing
 
 export default function GameManager() {
   const phase = useGame((state) => state.phase);
