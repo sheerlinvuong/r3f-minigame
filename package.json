@@ -8,7 +8,10 @@
     "build": "vite build"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@vitejs/plugin-react": "4.3",
+    "eslint": "^10.10.0",
+    "globals": "^17.12.0",
     "vite": "^6.2.2",
     "vite-plugin-restart": "^0.4.2"
   },
