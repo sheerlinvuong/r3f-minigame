@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
-import { MeshCollider, RigidBody, BallCollider } from "@react-three/rapier";
+import { useMemo, useState, useRef } from "react";
+import { BallCollider } from "@react-three/rapier";
+import { useFrame } from "@react-three/fiber";
 import FoodData from "../FoodData";
 import { FoodItem } from "./FoodItem";
 import { Plate } from "./Plate";
@@ -7,6 +8,9 @@ import usePlayer from "../stores/usePlayer";
 import useGame from "../stores/useGame";
 
 const MenuNames = Object.keys(FoodData);
+const RADIUS = 5;
+const TOTAL_ITEMS = 12;
+const RESPAWN_DELAY = 5000;
 
 function randomFoodName() {
   const randomNumber = Math.floor(Math.random() * MenuNames.length);
@@ -14,16 +18,12 @@ function randomFoodName() {
 }
 
 export default function TableItems() {
-  const radius = 5; // Circle radius
-  const totalItems = 12;
-  const itemLength = new Array(totalItems).fill(0);
-
   const platePositions = useMemo(() => {
-    return itemLength.map((_, i) => {
-      const angle = (i * 2 * Math.PI) / totalItems;
+    return Array.from({ length: TOTAL_ITEMS }, (_, i) => {
+      const angle = (i * 2 * Math.PI) / TOTAL_ITEMS;
       return {
         id: i,
-        position: [radius * Math.cos(angle), 0, radius * Math.sin(angle)],
+        position: [RADIUS * Math.cos(angle), 0, RADIUS * Math.sin(angle)],
       };
     });
   }, []);
@@ -31,11 +31,15 @@ export default function TableItems() {
   const [foods, setFoods] = useState(() =>
     platePositions.map(() => randomFoodName()),
   );
-
   const logCollectedFood = usePlayer((state) => state.logCollectedFood);
+  const phase = useGame((state) => state.phase);
+  // TODO get some transitions on in and out
 
-  function collectFood(id) {
-    logCollectedFood("player1", foods[id]);
+  const overlapping = useRef({});
+  const wasGrabbing = useRef(false);
+
+  function collectFood(id, playerId) {
+    logCollectedFood(playerId, foods[id]);
 
     setFoods((prev) => {
       const next = [...prev];
@@ -43,7 +47,8 @@ export default function TableItems() {
       return next;
     });
 
-    // Respawn after 5 seconds
+    delete overlapping.current[id];
+
     // TODO spawn rate weighting
     setTimeout(() => {
       setFoods((prev) => {
@@ -51,27 +56,51 @@ export default function TableItems() {
         next[id] = randomFoodName();
         return next;
       });
-    }, 5000);
+    }, RESPAWN_DELAY);
   }
 
-  const phase = useGame((state) => state.phase);
-  // TODO get some transitions on in and out
+  useFrame(() => {
+    const overlappingIds = Object.keys(overlapping.current);
+    const isGrabbingNow = overlappingIds.some(
+      (id) => overlapping.current[id]?.userData?.isGrabbing,
+    );
+
+    const justStartedGrabbing = isGrabbingNow && !wasGrabbing.current;
+    wasGrabbing.current = isGrabbingNow;
+
+    if (justStartedGrabbing) {
+      const id = overlappingIds.find((id) => foods[id]);
+      if (id !== undefined) {
+        const playerId = overlapping.current[id]?.userData?.id;
+        collectFood(id, playerId);
+      }
+    }
+  });
 
   return platePositions.map((plate) => (
     <group key={plate.id} position={plate.position}>
-      <group position-y={0}>
-        <Plate scale={0.28} />
-      </group>
+      <Plate scale={0.28} />
+
       {foods[plate.id] && phase === "playing" && (
-        <>
+        <group
+          userData={{
+            type: "food",
+            plateId: plate.id,
+            food: foods[plate.id],
+          }}
+        >
           <FoodItem type={foods[plate.id]} />
           <BallCollider
             args={[0.5]}
-            //   position={[0, 0.5, 0]}
             sensor
-            onIntersectionEnter={() => collectFood(plate.id)}
+            onIntersectionEnter={({ rigidBody }) => {
+              overlapping.current[plate.id] = rigidBody;
+            }}
+            onIntersectionExit={() => {
+              delete overlapping.current[plate.id];
+            }}
           />
-        </>
+        </group>
       )}
     </group>
   ));

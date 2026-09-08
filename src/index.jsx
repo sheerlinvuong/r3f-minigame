@@ -15,7 +15,7 @@ root.render(
       { name: "backward", keys: ["ArrowDown", "KeyS"] },
       { name: "leftward", keys: ["ArrowLeft", "KeyA"] },
       { name: "rightward", keys: ["ArrowRight", "KeyD"] },
-      // { name: 'jump', keys: ['Space'] },
+      { name: "grab", keys: ["Space"] },
     ]}
   >
     <Canvas
@@ -24,13 +24,13 @@ root.render(
         fov: 45,
         near: 0.1,
         far: 200,
-        position: [5, 8, 12],
+        position: [-5, 8, -12],
       }}
     >
       <axesHelper args={[50]} />
       <Experience />
     </Canvas>
     <GameManager />
-    <Debug />
+    {/* <Debug /> */}
   </KeyboardControls>,
 );
