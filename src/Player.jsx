@@ -18,7 +18,6 @@ function lerpAngle(current, target, alpha) {
   return current + difference * alpha;
 }
 
-const START_POSITION = [0, 2, 0];
 const SPEED = 4;
 const ROTATION_LERP = 0.1;
 
@@ -32,7 +31,11 @@ const GRAB_ANIMATION = "0056_OUJI";
 const UP = new THREE.Vector3(0, 1, 0);
 const sensorOffset = new THREE.Vector3(0, 0.2, 1.1); // this places the offset from body
 
-export default function Player() {
+export default function Player({
+  playerId,
+  startPosition = [0, 2, 0],
+  CharacterComponent = Character,
+}) {
   const body = useRef();
   const sensorBody = useRef();
   const playerRef = useRef();
@@ -41,9 +44,9 @@ export default function Player() {
 
   const [_, getKeys] = useKeyboardControls();
   const [animation, setAnimation] = useState(IDLE_ANIMATION);
+  const rotationTarget = useRef(Math.PI);
 
   // SensorBody
-  const rotationTarget = useRef(0);
   const sensorPosition = useRef(new THREE.Vector3());
   const sensorQuaternion = useRef(new THREE.Quaternion());
 
@@ -53,7 +56,7 @@ export default function Player() {
   const previousGrab = useRef(false);
   const sensorUserData = useRef({
     type: "player",
-    id: "player1",
+    id: playerId,
     isGrabbing: false,
   }).current;
 
@@ -158,11 +161,11 @@ export default function Player() {
       <RigidBody
         ref={body}
         colliders={false}
-        position={START_POSITION}
+        position={startPosition}
         lockRotations
       >
         <group ref={playerRef}>
-          <Character position-y={-0.7} animation={animation} />
+          <CharacterComponent position-y={-0.7} animation={animation} />
           <CapsuleCollider args={[0.25, 0.5]} />
         </group>
       </RigidBody>
