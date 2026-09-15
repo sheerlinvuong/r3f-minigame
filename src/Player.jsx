@@ -143,7 +143,7 @@ export default function Player({
       .applyQuaternion(sensorQuaternion.current);
 
     const playerPosition = body.current.translation();
-    sensorBody.current.setTranslation(
+    sensorBody.current.setNextKinematicTranslation(
       {
         x: playerPosition.x + sensorPosition.current.x,
         y: playerPosition.y + sensorPosition.current.y,
@@ -152,7 +152,7 @@ export default function Player({
       true,
     );
 
-    sensorBody.current.setRotation(sensorQuaternion.current, true);
+    sensorBody.current.setNextKinematicRotation(sensorQuaternion.current, true);
     sensorUserData.isGrabbing = isCollecting.current;
   });
 
@@ -172,13 +172,12 @@ export default function Player({
 
       <RigidBody
         ref={sensorBody}
-        type="dynamic"
-        gravityScale={0}
+        type="kinematicPosition"
         colliders={false}
         lockRotations
         userData={sensorUserData}
       >
-        <CuboidCollider args={[0.2, 0.1, 0.5]} />
+        <CuboidCollider args={[0.2, 0.1, 0.5]} sensor />
       </RigidBody>
     </>
   );
