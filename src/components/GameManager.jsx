@@ -10,7 +10,7 @@
 import { useEffect } from "react";
 import useGame from "../stores/useGame";
 import IntroCard from "./IntroCard";
-import PlayerPoints from "./PlayerPointsUI";
+import PlayerPointsUI from "./PlayerPointsUI";
 import WinnerCard from "./WinnerCard";
 import usePlayer from "../stores/usePlayer";
 import Countdown from "./Countdown";
@@ -40,7 +40,7 @@ export default function GameManager() {
     const timer = setTimeout(() => {
       endPlaying();
       calculateScore();
-    }, 15000);
+    }, 25000);
 
     return () => clearTimeout(timer);
   }, [phase, endPlaying]);
@@ -60,7 +60,7 @@ export default function GameManager() {
     <div className="main">
       {phase === "ready" && <IntroCard onStart={start} />}
 
-      {(phase !== "ready" || phase !== "countdown") && <PlayerPoints />}
+      {(phase !== "ready" || phase !== "countdown") && <PlayerPointsUI />}
 
       {phase === "countdown" && <Countdown />}
 

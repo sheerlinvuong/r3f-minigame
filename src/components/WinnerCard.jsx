@@ -7,7 +7,9 @@ export default function WinnerCard({ onRestart }) {
     <div className="fixed">
       <div className="center">
         <div className="player">
-          <h3>{winner.label}</h3>
+          <h3 style={{ backgroundColor: `${winner.colour}` }}>
+            {winner.label}
+          </h3>
           <p className="winner">WINS</p>
         </div>
         <button className="restart" onClick={() => onRestart()}>
