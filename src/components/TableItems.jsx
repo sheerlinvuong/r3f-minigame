@@ -6,6 +6,7 @@ import { FoodItem } from "./FoodItem";
 import { Plate } from "./Plate";
 import usePlayer from "../stores/usePlayer";
 import useGame from "../stores/useGame";
+import { ActiveCollisionTypes } from "@dimforge/rapier3d-compat";
 
 const MenuNames = Object.keys(FoodData);
 const RADIUS = 5;
@@ -36,7 +37,7 @@ export default function TableItems() {
   // TODO get some transitions on in and out
 
   const overlapping = useRef({});
-  const wasGrabbing = useRef(false);
+  const wasGrabbing = useRef({});
 
   function collectFood(id, playerId) {
     logCollectedFood(playerId, foods[id]);
@@ -60,19 +61,25 @@ export default function TableItems() {
   }
 
   useFrame(() => {
-    const overlappingIds = Object.keys(overlapping.current);
-    const isGrabbingNow = overlappingIds.some(
-      (id) => overlapping.current[id]?.userData?.isGrabbing,
-    );
+    const activePlayers = {};
+    for (const plateId in overlapping.current) {
+      for (const playerId in overlapping.current[plateId]) {
+        activePlayers[playerId] = overlapping.current[plateId][playerId];
+      }
+    }
 
-    const justStartedGrabbing = isGrabbingNow && !wasGrabbing.current;
-    wasGrabbing.current = isGrabbingNow;
+    for (const playerId in activePlayers) {
+      const rigidBody = activePlayers[playerId];
+      const isGrabbingNow = !!rigidBody?.userData?.isGrabbing;
+      const justStartedGrabbing =
+        isGrabbingNow && !wasGrabbing.current[playerId];
+      wasGrabbing.current[playerId] = isGrabbingNow;
 
-    if (justStartedGrabbing) {
-      const id = overlappingIds.find((id) => foods[id]);
-      if (id !== undefined) {
-        const playerId = overlapping.current[id]?.userData?.id;
-        collectFood(id, playerId);
+      if (justStartedGrabbing) {
+        const plateId = Object.keys(overlapping.current).find(
+          (id) => overlapping.current[id]?.[playerId] && foods[id],
+        );
+        if (plateId !== undefined) collectFood(plateId, playerId);
       }
     }
   });
@@ -93,11 +100,20 @@ export default function TableItems() {
           <BallCollider
             args={[0.5]}
             sensor
+            activeCollisionTypes={
+              ActiveCollisionTypes.DEFAULT |
+              ActiveCollisionTypes.KINEMATIC_KINEMATIC
+            }
             onIntersectionEnter={({ rigidBody }) => {
-              overlapping.current[plate.id] = rigidBody;
+              const playerId = rigidBody?.userData?.id;
+              if (!overlapping.current[plate.id]) {
+                overlapping.current[plate.id] = {};
+              }
+              overlapping.current[plate.id][playerId] = rigidBody;
             }}
-            onIntersectionExit={() => {
-              delete overlapping.current[plate.id];
+            onIntersectionExit={({ rigidBody }) => {
+              const playerId = rigidBody?.userData?.id;
+              if (playerId) delete overlapping.current[plate.id]?.[playerId];
             }}
           />
         </group>

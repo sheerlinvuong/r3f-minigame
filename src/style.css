@@ -106,22 +106,30 @@ h1 {
   height: calc(100% - 10dvh);
   margin: 5dvh auto;
   /* padding: 20px 60px; */
-
   color: #000;
 }
-.points > .left {
+.points > .leftPoints {
   flex-basis: 30%;
 }
 
-.points > .right {
+.points > .rightPoints {
   flex-basis: 30%;
   text-align: end;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }
 
 .player {
   display: flex;
   align-items: center;
   color: white;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+
+.rightPoints > .player {
+  flex-direction: row-reverse;
 }
 
 .player h3 {
@@ -131,7 +139,6 @@ h1 {
   margin: 0;
   padding: 0 15px;
   height: fit-content;
-  background-color: blue;
   border-radius: 50%;
   border: 4px solid black;
 }
@@ -141,7 +148,6 @@ h1 {
   letter-spacing: -0.15rem;
   font-weight: 600;
   margin: 0;
-  padding-left: 1rem;
   /* TODO not a fan of the integer font */
 }
 
@@ -151,6 +157,9 @@ h1 {
   grid-auto-columns: 70px;
   grid-auto-flow: column;
   padding-bottom: 25px;
+}
+.plates.plates--reversed {
+  direction: rtl;
 }
 .plates img {
   width: 70px;

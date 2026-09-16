@@ -29,43 +29,57 @@ function AnimatedScore({ score }) {
   return <p className="score">£{displayScore.toFixed(2)}</p>;
 }
 
-const PlayerPoints = () => {
-  const phase = useGame((state) => state.phase);
-
-  const players = usePlayer((state) => state.players);
-  const plates = players[0].collectedFood;
-
-  const showScore = phase === "results" || phase === "winner";
-  const finalScore = players[0].score;
-
+const PlayerPoints = ({ player, showScore, className }) => {
   return (
-    <div className="points">
-      <div className="left">
-        <div className="player">
-          <h3>1P</h3>
-          {showScore && <AnimatedScore score={finalScore} />}
-        </div>
+    <div className={`${className}`}>
+      <div className="player">
+        <h3 style={{ backgroundColor: `${player.colour}` }}>{player.label}</h3>
+        {showScore && <AnimatedScore score={player.score} />}
+      </div>
 
-        <div className="plates">
-          {plates.length >= 1 &&
-            plates.map((item, i) => {
-              const column = Math.floor(i / 5) + 1;
-              const row = 5 - (i % 5);
-              return (
-                <img
-                  key={i}
-                  src="../assets/images/plate.png"
-                  style={{
-                    gridColumn: column,
-                    gridRow: row,
-                  }}
-                />
-              );
-            })}
-        </div>
+      <div
+        className={`plates ${className === "rightPoints" ? "plates--reversed" : ""}`}
+      >
+        {player.collectedFood.length >= 1 &&
+          player.collectedFood.map((_, i) => {
+            const column = Math.floor(i / 5) + 1;
+            const row = 5 - (i % 5);
+            return (
+              <img
+                key={i}
+                src="../assets/images/plate.png"
+                style={{
+                  gridColumn: column,
+                  gridRow: row,
+                }}
+              />
+            );
+          })}
       </div>
     </div>
   );
 };
 
-export default PlayerPoints;
+const PlayerPointsUI = () => {
+  const phase = useGame((state) => state.phase);
+  const showScore = phase === "results" || phase === "winner";
+
+  const players = usePlayer((state) => state.players);
+
+  return (
+    <div className="points">
+      {players.map((player, i) => {
+        return (
+          <PlayerPoints
+            key={player.id}
+            player={player}
+            showScore={showScore}
+            className={i === 0 ? "leftPoints" : "rightPoints"}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
+export default PlayerPointsUI;

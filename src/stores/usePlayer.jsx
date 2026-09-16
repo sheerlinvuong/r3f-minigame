@@ -5,12 +5,14 @@ const initialPlayerArray = [
   {
     id: "player1",
     label: "1P",
+    colour: "blue",
     score: 0,
     collectedFood: [],
   },
   {
     id: "player2",
     label: "2P",
+    colour: "red",
     score: 0,
     collectedFood: [],
   },
