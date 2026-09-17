@@ -8,6 +8,7 @@ import { useFrame } from "@react-three/fiber";
 import { useKeyboardControls } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
 import { Character } from "./components/Character";
+import useGame from "./stores/useGame";
 
 function lerpAngle(current, target, alpha) {
   const difference = Math.atan2(
@@ -36,6 +37,8 @@ export default function Player({
   startPosition = [0, 2, 0],
   CharacterComponent = Character,
 }) {
+  const phase = useGame((state) => state.phase);
+
   const body = useRef();
   const sensorBody = useRef();
   const playerRef = useRef();
@@ -81,10 +84,12 @@ export default function Player({
       z: 0,
     };
 
+    const canMove = phase === "playing";
+
     const justPressedGrab = grab && !previousGrab.current;
     previousGrab.current = grab;
 
-    if (justPressedGrab && !isBusy.current) {
+    if (canMove && justPressedGrab && !isBusy.current) {
       isBusy.current = true;
       isCollecting.current = true;
       playAnimation(GRAB_ANIMATION);
@@ -98,7 +103,7 @@ export default function Player({
       }, GRAB_ANIMATION_DURATION);
     }
 
-    if (!isBusy.current) {
+    if (canMove && !isBusy.current) {
       if (forward) {
         movement.z = 1;
       }
