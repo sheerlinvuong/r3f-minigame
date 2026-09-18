@@ -5,11 +5,11 @@ import {
   RigidBody,
 } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
-import { useKeyboardControls } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
 import { Character } from "./components/Character";
 import useGame from "./stores/useGame";
 import usePlayer from "./stores/usePlayer";
+import { useKeyboardInput } from "./stores/useKeyboardInput";
 
 function lerpAngle(current, target, alpha) {
   const difference = Math.atan2(
@@ -41,10 +41,12 @@ export default function Player({
   playerId,
   startPosition = [0, 2, 0],
   CharacterComponent = Character,
+  useInput = useKeyboardInput,
 }) {
   const phase = useGame((state) => state.phase);
   const winner = usePlayer((state) => state.winner);
   const isWinner = playerId === winner.id;
+  const getKeys = useInput();
 
   const body = useRef();
   const sensorBody = useRef();
@@ -52,7 +54,6 @@ export default function Player({
   const collectTimeout = useRef();
   const animationTimeout = useRef();
 
-  const [_, getKeys] = useKeyboardControls();
   const [animation, setAnimation] = useState(IDLE_ANIMATION);
   const rotationTarget = useRef(FACE_CAMERA_ROTATION_Y);
 
