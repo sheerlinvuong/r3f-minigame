@@ -51,7 +51,7 @@ export default function GameManager() {
     const timer = setTimeout(() => {
       calculateWinner();
       revealWinner();
-    }, 5000);
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, [phase, revealWinner]);

@@ -9,6 +9,7 @@ import { useKeyboardControls } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
 import { Character } from "./components/Character";
 import useGame from "./stores/useGame";
+import usePlayer from "./stores/usePlayer";
 
 function lerpAngle(current, target, alpha) {
   const difference = Math.atan2(
@@ -21,6 +22,7 @@ function lerpAngle(current, target, alpha) {
 
 const SPEED = 4;
 const ROTATION_LERP = 0.1;
+const FACE_CAMERA_ROTATION_Y = Math.PI;
 
 const GRAB_COLLECT_WINDOW = 300;
 const GRAB_ANIMATION_DURATION = 2000;
@@ -28,6 +30,9 @@ const GRAB_ANIMATION_DURATION = 2000;
 const IDLE_ANIMATION = "0028_OUJI";
 const WALK_ANIMATION = "0003_OUJI";
 const GRAB_ANIMATION = "0056_OUJI";
+const WAITING_ANIMATION = "0022_OUJI";
+const WIN_ANIMATION = "0097_OUJI";
+const LOSE_ANIMATION = "0092_OUJI";
 
 const UP = new THREE.Vector3(0, 1, 0);
 const sensorOffset = new THREE.Vector3(0, 0.2, 1.1); // this places the offset from body
@@ -38,6 +43,8 @@ export default function Player({
   CharacterComponent = Character,
 }) {
   const phase = useGame((state) => state.phase);
+  const winner = usePlayer((state) => state.winner);
+  const isWinner = playerId === winner.id;
 
   const body = useRef();
   const sensorBody = useRef();
@@ -47,7 +54,7 @@ export default function Player({
 
   const [_, getKeys] = useKeyboardControls();
   const [animation, setAnimation] = useState(IDLE_ANIMATION);
-  const rotationTarget = useRef(Math.PI);
+  const rotationTarget = useRef(FACE_CAMERA_ROTATION_Y);
 
   // SensorBody
   const sensorPosition = useRef(new THREE.Vector3());
@@ -69,6 +76,34 @@ export default function Player({
       clearTimeout(animationTimeout.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (phase !== "ready") return;
+    if (!body.current) return;
+
+    body.current.setTranslation(
+      { x: startPosition[0], y: startPosition[1], z: startPosition[2] },
+      true,
+    );
+    body.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+
+    rotationTarget.current = FACE_CAMERA_ROTATION_Y;
+    if (playerRef.current)
+      playerRef.current.rotation.y = rotationTarget.current;
+
+    isBusy.current = false;
+    isCollecting.current = false;
+    previousGrab.current = false;
+    clearTimeout(collectTimeout.current);
+    clearTimeout(animationTimeout.current);
+
+    setAnimation(IDLE_ANIMATION);
+  }, [phase, startPosition]);
+
+  useEffect(() => {
+    if (phase !== "results") return;
+    rotationTarget.current = FACE_CAMERA_ROTATION_Y;
+  }, [phase]);
 
   function playAnimation(name) {
     if (animation !== name) setAnimation(name);
@@ -131,8 +166,14 @@ export default function Player({
 
     body.current.setLinvel(vel, true);
 
-    if (!isBusy.current) {
+    if (phase === "winner") {
+      playAnimation(isWinner ? WIN_ANIMATION : LOSE_ANIMATION);
+    } else if (phase === "results") {
+      playAnimation(WAITING_ANIMATION);
+    } else if (canMove && !isBusy.current) {
       playAnimation(isMoving ? WALK_ANIMATION : IDLE_ANIMATION);
+    } else if (!isBusy.current) {
+      playAnimation(IDLE_ANIMATION);
     }
 
     const rotation = lerpAngle(
