@@ -5,6 +5,8 @@ import Lights from "./Lights.jsx";
 import Level from "./Level.jsx";
 import { Character } from "./components/Character";
 import { CharacterTwo } from "./components/CharacterTwo";
+import { CharacterThree } from "./components/CharacterThree";
+import { useAutoInput } from "./stores/useAutoInput.jsx";
 
 const player1Map = [
   { name: "forward", keys: ["KeyW"] },
@@ -26,7 +28,7 @@ export default function Experience() {
   return (
     <>
       <OrbitControls makeDefault />
-      <Physics debug>
+      <Physics>
         <Lights />
         <Level />
         <KeyboardControls map={player1Map}>
@@ -43,6 +45,12 @@ export default function Experience() {
             CharacterComponent={CharacterTwo}
           />
         </KeyboardControls>
+        <Player
+          playerId="player3"
+          startPosition={[0, 2, 0]}
+          CharacterComponent={CharacterThree}
+          useInput={useAutoInput}
+        />
       </Physics>
     </>
   );
