@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import { BallCollider } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
 import FoodData from "../FoodData";
@@ -38,6 +38,12 @@ export default function TableItems() {
 
   const overlapping = useRef({});
   const wasGrabbing = useRef({});
+
+  useEffect(() => {
+    if (phase !== "ready") return;
+    overlapping.current = {};
+    wasGrabbing.current = {};
+  }, [phase]);
 
   function collectFood(id, playerId) {
     logCollectedFood(playerId, foods[id]);
