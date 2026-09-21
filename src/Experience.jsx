@@ -6,6 +6,7 @@ import Level from "./Level.jsx";
 import { Character } from "./components/Character";
 import { CharacterTwo } from "./components/CharacterTwo";
 import { CharacterThree } from "./components/CharacterThree";
+import { CharacterFour } from "./components/CharacterFour";
 import { useAutoInput } from "./stores/useAutoInput.jsx";
 
 const player1Map = [
@@ -34,21 +35,27 @@ export default function Experience() {
         <KeyboardControls map={player1Map}>
           <Player
             playerId="player1"
-            startPosition={[-2, 2, 0]}
+            startPosition={[-2, 2, -2]}
             CharacterComponent={Character}
           />
         </KeyboardControls>
         <KeyboardControls map={player2Map}>
           <Player
             playerId="player2"
-            startPosition={[2, 2, 0]}
+            startPosition={[2, 2, -2]}
             CharacterComponent={CharacterTwo}
           />
         </KeyboardControls>
         <Player
           playerId="player3"
-          startPosition={[0, 2, 0]}
+          startPosition={[-2, 2, 2]}
           CharacterComponent={CharacterThree}
+          useInput={useAutoInput}
+        />
+        <Player
+          playerId="player4"
+          startPosition={[2, 2, 2]}
+          CharacterComponent={CharacterFour}
           useInput={useAutoInput}
         />
       </Physics>

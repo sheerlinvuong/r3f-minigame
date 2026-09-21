@@ -16,6 +16,20 @@ const initialPlayerArray = [
     score: 0,
     collectedFood: [],
   },
+  {
+    id: "player3",
+    label: "3P",
+    colour: "green",
+    score: 0,
+    collectedFood: [],
+  },
+  {
+    id: "player4",
+    label: "4P",
+    colour: "yellow",
+    score: 0,
+    collectedFood: [],
+  },
 ];
 
 export default create((set) => {
