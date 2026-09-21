@@ -26,7 +26,7 @@ const initialPlayerArray = [
   {
     id: "player4",
     label: "4P",
-    colour: "yellow",
+    colour: "gold",
     score: 0,
     collectedFood: [],
   },

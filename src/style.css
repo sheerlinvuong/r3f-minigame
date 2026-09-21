@@ -101,6 +101,8 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
+  flex-wrap: wrap-reverse;
+  align-content: space-between;
 
   width: 85%;
   height: calc(100% - 10dvh);
@@ -108,19 +110,29 @@ h1 {
   /* padding: 20px 60px; */
   color: #000;
 }
+
+.points > div {
+  display: flex;
+  flex-basis: 50%;
+}
+
 .points > .leftPoints {
-  flex-basis: 30%;
+  align-items: start;
 }
 
 .points > .rightPoints {
-  flex-basis: 30%;
-  text-align: end;
-  display: flex;
-  flex-direction: column;
   align-items: end;
 }
 
-.player {
+.points > .topPoints {
+  flex-direction: column-reverse;
+}
+
+.points > .bottomPoints {
+  flex-direction: column;
+}
+
+.playerLabel {
   display: flex;
   align-items: center;
   color: white;
@@ -128,11 +140,11 @@ h1 {
   gap: 1rem;
 }
 
-.rightPoints > .player {
+.rightPoints > .playerLabel {
   flex-direction: row-reverse;
 }
 
-.player h3 {
+.playerLabel h3 {
   font-size: 2.5rem;
   line-height: 3rem;
   font-weight: 300;
@@ -142,7 +154,7 @@ h1 {
   border-radius: 50%;
   border: 4px solid black;
 }
-.player .score {
+.playerLabel .score {
   font-size: 2.75rem;
   -webkit-text-stroke: 2px black;
   letter-spacing: -0.15rem;

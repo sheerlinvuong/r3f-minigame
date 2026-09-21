@@ -6,7 +6,7 @@ export default function WinnerCard({ onRestart }) {
   return (
     <div className="fixed">
       <div className="center">
-        <div className="player">
+        <div className="playerLabel">
           <h3 style={{ backgroundColor: `${winner.colour}` }}>
             {winner.label}
           </h3>

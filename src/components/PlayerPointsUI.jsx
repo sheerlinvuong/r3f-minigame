@@ -29,16 +29,19 @@ function AnimatedScore({ score }) {
   return <p className="score">£{displayScore.toFixed(2)}</p>;
 }
 
-const PlayerPoints = ({ player, showScore, className }) => {
+const PlayerPoints = ({ player, showScore, playerOrder }) => {
+  const horiPlacement = playerOrder % 2 === 0 ? "leftPoints" : "rightPoints";
+  const vertPlacement = playerOrder >= 2 ? "topPoints" : "bottomPoints";
+
   return (
-    <div className={`${className}`}>
-      <div className="player">
+    <div className={`${horiPlacement} ${vertPlacement}`}>
+      <div className="playerLabel">
         <h3 style={{ backgroundColor: `${player.colour}` }}>{player.label}</h3>
         {showScore && <AnimatedScore score={player.score} />}
       </div>
 
       <div
-        className={`plates ${className === "rightPoints" ? "plates--reversed" : ""}`}
+        className={`plates ${horiPlacement === "rightPoints" ? "plates--reversed" : ""}`}
       >
         {player.collectedFood.length >= 1 &&
           player.collectedFood.map((_, i) => {
@@ -72,9 +75,9 @@ const PlayerPointsUI = () => {
         return (
           <PlayerPoints
             key={player.id}
+            playerOrder={i}
             player={player}
             showScore={showScore}
-            className={i === 0 ? "leftPoints" : "rightPoints"}
           />
         );
       })}
